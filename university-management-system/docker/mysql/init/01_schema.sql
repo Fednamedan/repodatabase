@@ -1,8 +1,6 @@
--- Создание базы данных
 CREATE DATABASE IF NOT EXISTS university CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE university;
 
--- 1. Таблица стран
 CREATE TABLE Countries (
     country_id INT AUTO_INCREMENT PRIMARY KEY,
     country_name VARCHAR(100) NOT NULL UNIQUE,
@@ -10,7 +8,6 @@ CREATE TABLE Countries (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- 2. Таблица городов
 CREATE TABLE Cities (
     city_id INT AUTO_INCREMENT PRIMARY KEY,
     city_name VARCHAR(100) NOT NULL,
@@ -20,7 +17,6 @@ CREATE TABLE Cities (
     INDEX idx_city_country (city_name, country_id)
 ) ENGINE=InnoDB;
 
--- 3. Таблица факультетов
 CREATE TABLE Faculties (
     faculty_id INT AUTO_INCREMENT PRIMARY KEY,
     faculty_name VARCHAR(200) NOT NULL UNIQUE,
@@ -32,7 +28,7 @@ CREATE TABLE Faculties (
     INDEX idx_faculty_established (established_year)
 ) ENGINE=InnoDB;
 
--- 4. Таблица кафедр
+
 CREATE TABLE Departments (
     department_id INT AUTO_INCREMENT PRIMARY KEY,
     department_name VARCHAR(200) NOT NULL,
@@ -62,7 +58,7 @@ CREATE TABLE Professors (
     INDEX idx_professor_hire (hire_date)
 ) ENGINE=InnoDB;
 
--- 6. Таблица научных интересов
+
 CREATE TABLE ResearchInterests (
     interest_id INT AUTO_INCREMENT PRIMARY KEY,
     interest_name VARCHAR(200) NOT NULL UNIQUE,
@@ -71,7 +67,6 @@ CREATE TABLE ResearchInterests (
     INDEX idx_research_field (field)
 ) ENGINE=InnoDB;
 
--- 7. Связующая таблика преподаватель-интересы
 CREATE TABLE ProfessorInterests (
     professor_id INT NOT NULL,
     interest_id INT NOT NULL,
@@ -80,7 +75,7 @@ CREATE TABLE ProfessorInterests (
     FOREIGN KEY (interest_id) REFERENCES ResearchInterests(interest_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- 8. Таблица студентов
+
 CREATE TABLE Students (
     student_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
@@ -101,7 +96,7 @@ CREATE TABLE Students (
     INDEX idx_student_enrollment (enrollment_date)
 ) ENGINE=InnoDB;
 
--- 9. Таблица курсов
+
 CREATE TABLE Courses (
     course_id INT AUTO_INCREMENT PRIMARY KEY,
     course_code VARCHAR(20) NOT NULL UNIQUE,
@@ -116,7 +111,7 @@ CREATE TABLE Courses (
     INDEX idx_course_credits (credits)
 ) ENGINE=InnoDB;
 
--- 10. Таблица учебных групп
+
 CREATE TABLE StudyGroups (
     group_id INT AUTO_INCREMENT PRIMARY KEY,
     group_code VARCHAR(20) NOT NULL UNIQUE,
@@ -128,7 +123,6 @@ CREATE TABLE StudyGroups (
     INDEX idx_group_faculty (faculty_id)
 ) ENGINE=InnoDB;
 
--- 11. Связующая таблица студент-группа
 CREATE TABLE StudentGroups (
     student_id INT NOT NULL,
     group_id INT NOT NULL,
@@ -139,7 +133,7 @@ CREATE TABLE StudentGroups (
     INDEX idx_student_group (student_id, group_id)
 ) ENGINE=InnoDB;
 
--- 12. Таблица расписания занятий
+
 CREATE TABLE ClassSchedule (
     schedule_id INT AUTO_INCREMENT PRIMARY KEY,
     course_id INT NOT NULL,
@@ -161,7 +155,7 @@ CREATE TABLE ClassSchedule (
     INDEX idx_schedule_semester (semester, academic_year)
 ) ENGINE=InnoDB;
 
--- 13. Таблица оценок
+
 CREATE TABLE Grades (
     grade_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
@@ -184,7 +178,6 @@ CREATE TABLE Grades (
     INDEX idx_grade_semester (semester, academic_year)
 ) ENGINE=InnoDB;
 
--- 14. Таблица научных публикаций
 CREATE TABLE Publications (
     publication_id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(500) NOT NULL,
@@ -200,7 +193,7 @@ CREATE TABLE Publications (
     INDEX idx_publication_publisher (publisher(100))
 ) ENGINE=InnoDB;
 
--- 15. Связующая таблица преподаватель-публикации
+
 CREATE TABLE ProfessorPublications (
     professor_id INT NOT NULL,
     publication_id INT NOT NULL,
@@ -212,7 +205,7 @@ CREATE TABLE ProfessorPublications (
     INDEX idx_professor_publication (professor_id, publication_id)
 ) ENGINE=InnoDB;
 
--- 16. Таблица лабораторий
+
 CREATE TABLE Laboratories (
     lab_id INT AUTO_INCREMENT PRIMARY KEY,
     lab_name VARCHAR(200) NOT NULL,
@@ -228,7 +221,7 @@ CREATE TABLE Laboratories (
     INDEX idx_lab_supervisor (supervisor_id)
 ) ENGINE=InnoDB;
 
--- 17. Таблица исследовательских проектов
+
 CREATE TABLE ResearchProjects (
     project_id INT AUTO_INCREMENT PRIMARY KEY,
     project_name VARCHAR(300) NOT NULL,
@@ -246,7 +239,7 @@ CREATE TABLE ResearchProjects (
     INDEX idx_project_dates (start_date, end_date)
 ) ENGINE=InnoDB;
 
--- 18. Таблица участия студентов в проектах
+
 CREATE TABLE StudentProjects (
     student_id INT NOT NULL,
     project_id INT NOT NULL,
@@ -262,7 +255,7 @@ CREATE TABLE StudentProjects (
     INDEX idx_project_role (role)
 ) ENGINE=InnoDB;
 
--- 19. Таблица библиотечных ресурсов
+
 CREATE TABLE LibraryResources (
     resource_id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(500) NOT NULL,
@@ -280,7 +273,7 @@ CREATE TABLE LibraryResources (
     INDEX idx_resource_year (publication_year)
 ) ENGINE=InnoDB;
 
--- 20. Таблица выдачи библиотечных ресурсов
+
 CREATE TABLE ResourceLoans (
     loan_id INT AUTO_INCREMENT PRIMARY KEY,
     resource_id INT NOT NULL,
@@ -302,7 +295,6 @@ CREATE TABLE ResourceLoans (
     INDEX idx_loan_dates (loan_date, due_date, return_date)
 ) ENGINE=InnoDB;
 
--- 21. Дополнительная таблица: Аудитории
 CREATE TABLE Classrooms (
     classroom_id INT AUTO_INCREMENT PRIMARY KEY,
     room_number VARCHAR(10) NOT NULL UNIQUE,
@@ -316,7 +308,6 @@ CREATE TABLE Classrooms (
     INDEX idx_classroom_capacity (capacity)
 ) ENGINE=InnoDB;
 
--- 22. Дополнительная таблица: Стипендии
 CREATE TABLE Scholarships (
     scholarship_id INT AUTO_INCREMENT PRIMARY KEY,
     scholarship_name VARCHAR(200) NOT NULL UNIQUE,
@@ -330,7 +321,7 @@ CREATE TABLE Scholarships (
     INDEX idx_scholarship_deadline (application_deadline)
 ) ENGINE=InnoDB;
 
--- 23. Дополнительная таблица: Студенческие стипендии
+
 CREATE TABLE StudentScholarships (
     student_id INT NOT NULL,
     scholarship_id INT NOT NULL,
